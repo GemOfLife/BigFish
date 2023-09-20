@@ -25,8 +25,6 @@
 
 #include "position.h"
 
-
-
 namespace {
 
 const std::vector<std::string> Defaults = {
