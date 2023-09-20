@@ -156,9 +156,9 @@ public:
 
 string engine_info(bool to_uci) {
   stringstream ss;
-  ss << "BullFish " << version << setfill('0');
+  ss << "BigFish " << version << setfill('0');
 
-  if constexpr (version == "dev")
+  if constexpr (version == "1.0")
   {
       ss << "-";
       #ifdef GIT_DATE
@@ -182,7 +182,7 @@ string engine_info(bool to_uci) {
   }
 
   ss << (to_uci  ? "\nid author ": " by ")
-     << "IbaiBuR, K. Kiniama, A. Manzo and Stockfish developers (see AUTHORS file)";
+     << "GemOfLife, IbaiBuR, K. Kiniama, A. Manzo and Stockfish developers (see AUTHORS file)";
 
   return ss.str();
 }
