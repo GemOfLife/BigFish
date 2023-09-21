@@ -39,9 +39,9 @@ endif
 
 ### Executable name
 ifeq ($(target_windows),yes)
-	EXE = bullfish.exe
+	EXE = BigFish.exe
 else
-	EXE = bullfish
+	EXE = BigFish
 endif
 
 ### Installation dir definitions
