@@ -1810,7 +1810,7 @@ moves_loop: // When in check, search starts here
         }
     }
 
-    if (openingVariety && bestValue + (openingVariety * UCI::NormalizeToPawnValue / 100) >= 0 && pos.count<PAWN>() > 12)
+    if (openingVariety && bestValue + (openingVariety * UCI::NormalizeToPawnValue / 100) >= 0)
         bestValue += thisThread->nodes % (openingVariety + 1);
 
     // Step 9. Check for mate
