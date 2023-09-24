@@ -1194,7 +1194,7 @@ moves_loop: // When in check, search starts here
 
               history += 2 * thisThread->mainHistory[us][from_to(move)];
 
-              lmrDepth += history / 7011;
+              lmrDepth += history / 6950;
               lmrDepth = std::max(lmrDepth, -2);
 
 	      int futilityValue = ss->staticEval + 112;
@@ -1393,7 +1393,7 @@ moves_loop: // When in check, search starts here
               if (newDepth > d)
                   value = -search<NonPV>(pos, ss+1, -(alpha+1), -alpha, newDepth, !cutNode);
 
-              int bonus = value <= alpha ? -stat_bonus(newDepth)
+              int bonus = value <= alpha ? -stat_bonus(newDepth) * 4 / 5
                         : value >= beta  ?  stat_bonus(newDepth)
                                          :  0;
 
