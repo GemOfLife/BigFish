@@ -74,6 +74,12 @@ using namespace Search;
 
 namespace {
 
+  constexpr int MoveCountThreshold[3][2][2] = {
+      { { 56, 27 }, { 77, 41 } },
+      { { 34, 42 }, { 31, 36 } },
+      { { 35, 34 }, { 75, 58 } },
+  };
+
   // Different node types, used as a template parameter
   enum NodeType { NonPV, PV, Root };
 
@@ -1105,6 +1111,7 @@ moves_loop: // When in check, search starts here
 
     value = bestValue;
     moveCountPruning = singularQuietLMR = false;
+    const auto& mcThreshold = MoveCountThreshold[2 * PvNode + cutNode][priorCapture];
 
     // Indicate PvNodes that will probably fail low if the node was searched
     // at a depth equal to or greater than the current depth, and the result of this search was a fail low.
@@ -1350,6 +1357,12 @@ moves_loop: // When in check, search starts here
       else if (move == ttMove)
           r--;
 
+      if (moveCount > mcThreshold[1] && moveCount <= mcThreshold[0])
+          r--;
+
+      else if (moveCount > mcThreshold[0] && moveCount <= mcThreshold[1])
+          r++;
+	      
       ss->statScore =  2 * thisThread->mainHistory[us][from_to(move)]
                      + (*contHist[0])[movedPiece][to_sq(move)]
                      + (*contHist[1])[movedPiece][to_sq(move)]
