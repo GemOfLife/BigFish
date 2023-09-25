@@ -77,6 +77,7 @@ namespace {
     states = StateListPtr(new std::deque<StateInfo>(1)); // Drop the old state and create a new one
     pos.set(fen, Options["UCI_Chess960"], &states->back(), Threads.main());
 
+	Key firstKey = pos.key();						 
     // Parse the move list, if any
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE)
     {
@@ -98,6 +99,9 @@ namespace {
         states->emplace_back();
         pos.do_move(m, states->back());
     }
+	static constexpr Key StartPosKey = 0xB4D30CD15A43432D;
+    if (firstKey == StartPosKey && pos.game_ply() == 0)
+        Experience::resume_learning();													  													   									  
   }
 
   // trace_eval() prints the evaluation of the current position, consistent with
@@ -331,6 +335,10 @@ void UCI::loop(int argc, char* argv[]) {
       else if (token == "go")         go(pos, is, states);
       else if (token == "position")   position(pos, is, states);
       else if (token == "ucinewgame")
+	  else if (token == "isready")
+      {
+          //Make sure experience has finished loading
+          Experience::wait_for_loading_finished();							  
       {
           //Kelly and Khalid
           if (LD.is_enabled())
@@ -359,6 +367,10 @@ void UCI::loop(int argc, char* argv[]) {
       else if (token == "d")        sync_cout << pos << sync_endl;
       else if (token == "eval")     trace_eval(pos);
       else if (token == "compiler") sync_cout << compiler_info() << sync_endl;
+	  else if (argc > 2 && token == "merge")    Experience::merge(argc - 2, argv + 2);
+	  else if (argc > 2 && token == "defrag")   Experience::defrag(argc - 2, argv + 2);
+	  else if (token == "exp")                  Experience::show_exp(pos, false);
+	  else if (token == "expex")                Experience::show_exp(pos, true);																				   
       else if (token == "export_net")
       {
           std::optional<std::string> filename;
