@@ -124,6 +124,7 @@ private:
   std::size_t size_ = 0;
 };
 
+
 /// xorshift64star Pseudo-Random Number Generator
 /// This class is based on original code written and dedicated
 /// to the public domain by Sebastiano Vigna (2014).
@@ -191,6 +192,24 @@ namespace CommandLine {
   extern std::string workingDirectory; // path of the working directory
 }
 //begin from khalid polyfish
+				 
+													   
+
+				 
+ 
+				
+								
+										
+								   
+									   
+									  
+										   
+										  
+									 
+ 
+
+										   
+
 #define EMPTY   "<empty>"
 namespace Utility 
 {
@@ -201,6 +220,14 @@ namespace Utility
     constexpr char DirectorySeparator = '/';
     constexpr char ReverseDirectorySeparator = '\\';
 #endif
+
+								
+
+								
+
+												  
+															   
+
     std::string unquote(const std::string& s);
     bool is_empty_filename(const std::string &f);
     std::string fix_path(const std::string& p);
@@ -389,3 +416,4 @@ namespace Utility
 } // namespace Stockfish
 
 #endif // #ifndef MISC_H_INCLUDED
+

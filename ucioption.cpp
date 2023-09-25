@@ -36,6 +36,7 @@
 #include "types.h"
 #include "uci.h"
 #include "learn.h"
+#include "experience.h"						   
 
 using std::string;
 
@@ -51,6 +52,8 @@ static void on_hash_size(const Option& o) { TT.resize(size_t(o)); }
 static void on_logger(const Option& o) { start_logger(o); }
 static void on_threads(const Option& o) { Threads.set(size_t(o)); }
 static void on_tb_path(const Option& o) { Tablebases::init(o); }
+static void on_exp_enabled(const Option& /*o*/) { Experience::init(); }
+static void on_exp_file(const Option& /*o*/) { Experience::init(); }																	   																	
 static void on_eval_file(const Option&) { Eval::NNUE::init(); }
 static void on_readonly_learning(const Option& o) { LD.set_readonly(o); }
 static void on_self_qlearning(const Option& o) { LD.set_learning_mode((bool)o ? "Self" : "Standard"); }
@@ -91,6 +94,15 @@ void init(OptionsMap& o) {
   o["EvalFile"]              << Option(EvalFileDefaultName, on_eval_file);
   o["Read only learning"]    << Option(false, on_readonly_learning);
   o["Self Q-learning"]       << Option(false, on_self_qlearning);
+  o["Experience Enabled"]                  << Option(true, on_exp_enabled);
+  o["Experience File"]                     << Option("SugaR.exp", on_exp_file);
+  o["Experience Readonly"]                 << Option(false);
+  o["Experience Book"]                     << Option(false);
+  o["Experience Book Best Move"]           << Option(true);
+  o["Experience Book Eval Importance"]     << Option(5, 0, 10);
+  o["Experience Book Min Depth"]           << Option(27, EXP_MIN_DEPTH, 64);
+  o["Experience Book Max Moves"]           << Option(100, 1, 100);
+  o["EvalFile"]                            << Option(EvalFileDefaultName, on_eval_file);															
   o["Opening variety"]       << Option (0, 0, 40);
   o["Concurrent Experience"] << Option (false);
 }
