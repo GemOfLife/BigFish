@@ -1,13 +1,13 @@
 /*
-  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
+  SugaR, a UCI chess playing engine derived from Stockfish
   Copyright (C) 2004-2023 The Stockfish developers (see AUTHORS file)
 
-  Stockfish is free software: you can redistribute it and/or modify
+  SugaR is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  Stockfish is distributed in the hope that it will be useful,
+  SugaR is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
@@ -19,18 +19,18 @@
 #ifndef MISC_H_INCLUDED
 #define MISC_H_INCLUDED
 
-#include <algorithm>
+#include <algorithm>				
 #include <cassert>
 #include <chrono>
 #include <functional>
-#include <mutex>
+#include <mutex>					 				
 #include <ostream>
 #include <string>
 #include <vector>
 #include <cstdint>
 #ifndef _MSC_VER
 #include <mm_malloc.h>
-#endif
+#endif						  
 #include <iostream>
 #ifndef _WIN32
 #include <fcntl.h>
@@ -52,7 +52,7 @@
 
 namespace Stockfish {
 
-class Position; //Needed by is_game_decided() Learner from Khalid
+																 
 
 std::string engine_info(bool to_uci = false);
 std::string compiler_info();
@@ -82,8 +82,7 @@ struct HashTable {
 
 private:
   std::vector<Entry> table = std::vector<Entry>(Size); // Allocate on the heap
-};
-
+};							   															
 
 enum SyncCout { IO_LOCK, IO_UNLOCK };
 std::ostream& operator<<(std::ostream&, SyncCout);
@@ -123,6 +122,7 @@ private:
   T values_[MaxSize];
   std::size_t size_ = 0;
 };
+
 
 /// xorshift64star Pseudo-Random Number Generator
 /// This class is based on original code written and dedicated
@@ -190,9 +190,27 @@ namespace CommandLine {
   extern std::string binaryDirectory;  // path of the executable directory
   extern std::string workingDirectory; // path of the working directory
 }
-//begin from khalid polyfish
+
+void show_logo();
+std::string format_bytes(uint64_t bytes, int decimals);
+
+namespace SysInfo
+{
+    void init();
+    const std::string os_info();
+    const std::string processor_brand();
+    const std::string numa_nodes();
+    const std::string physical_cores();
+    const std::string logical_cores();
+    const std::string is_hyper_threading();
+    const std::string cache_info(int idx);
+    const std::string total_memory();
+}
+
+class Position; //Needed by is_game_decided
+
 #define EMPTY   "<empty>"
-namespace Utility 
+namespace Utility
 {
 #if defined(_WIN32) || defined (_WIN64)
     constexpr char DirectorySeparator = '\\';
@@ -201,6 +219,14 @@ namespace Utility
     constexpr char DirectorySeparator = '/';
     constexpr char ReverseDirectorySeparator = '\\';
 #endif
+
+    extern std::string myFolder;
+
+    void init(const char* arg0);
+
+    bool file_exists(const std::string& filename);
+    bool is_game_decided(const Position& pos, Value lastScore);
+
     std::string unquote(const std::string& s);
     bool is_empty_filename(const std::string &f);
     std::string fix_path(const std::string& p);
@@ -209,7 +235,7 @@ namespace Utility
     //from learner
     void init(const char *arg0);
     bool is_game_decided(const Position &pos, Value lastScore);
-    //from learner
+    //from learner																							 				  
     size_t get_file_size(const std::string& f);
     bool is_same_file(const std::string& f1, const std::string& f2);
 
@@ -384,8 +410,9 @@ namespace Utility
         }
     };
 }
-//end from khalid polyfish
+						  
 
 } // namespace Stockfish
 
 #endif // #ifndef MISC_H_INCLUDED
+
