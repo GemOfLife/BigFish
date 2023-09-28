@@ -149,20 +149,20 @@ void MovePicker::score() {
 
           // bonus for escaping from capture
           m.value += threatenedPieces & from ?
-                       (pt == QUEEN && !(to & threatenedByRook)  ? 50000
-                      : pt == ROOK  && !(to & threatenedByMinor) ? 25000
-                      :                !(to & threatenedByPawn)  ? 15000
+                       (pt == QUEEN && !(to & threatenedByRook)  ? 47618
+                      : pt == ROOK  && !(to & threatenedByMinor) ? 23865
+                      :                !(to & threatenedByPawn)  ? 13351
                       :                                            0 )
                       :                                            0 ;
 
           // malus for putting piece en prise
           m.value -= !(threatenedPieces & from) ?
-                        (pt == QUEEN ?   bool(to & threatenedByRook)  * 50000
-                                       + bool(to & threatenedByMinor) * 10000
-                                       + bool(to & threatenedByPawn)  * 20000
-                       : pt == ROOK  ?   bool(to & threatenedByMinor) * 25000
-                                       + bool(to & threatenedByPawn)  * 10000
-                       : pt != PAWN ?    bool(to & threatenedByPawn)  * 15000
+                        (pt == QUEEN ?   bool(to & threatenedByRook)  * 52427
+                                       + bool(to & threatenedByMinor) * 10941
+                                       + bool(to & threatenedByPawn)  * 21622
+                       : pt == ROOK  ?   bool(to & threatenedByMinor) * 23706
+                                       + bool(to & threatenedByPawn)  * 8976
+                       : pt != PAWN ?    bool(to & threatenedByPawn)  * 14822
                        :                                                0 )
                        :                                                0 ;
       }
@@ -257,15 +257,15 @@ top:
           endMoves = generate<QUIETS>(pos, cur);
 
           score<QUIETS>();
-          partial_insertion_sort(cur, endMoves, -3000 * depth);
+          partial_insertion_sort(cur, endMoves, -3032 * depth);
       }
 
       ++stage;
       [[fallthrough]];
 
   case QUIET:
-      if (   !skipQuiets
-          && select<Next>([&](){return   *cur != refutations[0].move
+      if (select<Next>([&](){return      (!skipQuiets || cur->value >= 17322)
+                                      && *cur != refutations[0].move
                                       && *cur != refutations[1].move
                                       && *cur != refutations[2].move;}))
           return *(cur - 1);
